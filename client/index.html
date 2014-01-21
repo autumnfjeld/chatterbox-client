@@ -8,15 +8,55 @@
     <!-- external javascript -->
     <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
+    <script src="bower_components/momentjs/moment.js"></script>
     
     <!-- internal javascript -->
     <script src="scripts/config.js"></script>
     <script src="scripts/app.js"></script>
+    <style>
+    
+    body{
+      background-color: #2980b9;
+    }
+    #main{
+      width: 700px;
+      background-color: #bdc3c7;
+      border:none;
+    }
+    select{
+      width:150px;
+    }
+    input{
+      height:30px;
+      width:300px;
+      border-radius: 5px;
+    }
+    li {
+      font-weight:bold;
+      list-style: none;
+    }
+    .time{
+      font-weight: normal;
+      font-style: italic;  
+    }
+    .text{
+      margin-left: 10px;
+    }
+      /*border: solid #2980b9 2px;
+      border-radius: 5px;*/
+    }
+    </style>
   </head>
   <body>
 
     <div id="main">
       <h1>Chat-Client</h1>
+      <button>More</button>
+      <input placeholder="What yo?!?!Do you even lift bro" class="write"></input>
+      <select selected="main">
+        <option>main</option>
+      </select>
+      <button class="room">I wanna new room</button>
     </div>
 
   </body>
