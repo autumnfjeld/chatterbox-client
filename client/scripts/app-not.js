@@ -6,8 +6,6 @@ var text;
 var currentRoom = "main";
 var incomingRooms = {"main":"main"};
 var loadedRooms = {"main":"main"};
-var userArray = [];
-var friends = [];
 
 var sendMessage = function(message){
   console.log("send");
@@ -48,19 +46,13 @@ var getMessage = function(){
 };
 
 var displayTexts = function(data){
-  console.log('display texts');
-  var $messages = $("<ul class='messages'></ul>").appendTo('.messagebox');
-  //console.log('check', $messages);
+  var $messages = $('#main').append("<ul class='messages'></ul>");
   $("span").remove();
   $("li").remove();
   _.each(data.results, function(value){
     incomingRooms[value.roomname] = value.roomname;
     makeRoom();
     if(value.roomname && value.roomname === currentRoom){
-      if(value.username && !_.contains(userArray,value.username)) {
-        userArray.push(value.username);
-        appendUsers();
-      }
       $messages.append("<li>"+value.username+"  "+"<span class='time'>"+moment(value.createdAt).fromNow()+"</span>"+"</li>");
       var $msgtext = $("<span class='text'></span>");
       $msgtext.text(value.text);
@@ -94,8 +86,7 @@ $("select").change(function(){
 var makeRoom = function(){
   _.each(incomingRooms, function(value){
     if(!_.contains(loadedRooms, value)){
-      var $roomName = $("<option></option>");
-      $roomName.text(value).appendTo($("select"));
+      $("select").append("<option>"+value+"</span>");
       loadedRooms[value] = value;
     }
   });
@@ -105,30 +96,12 @@ var userRoom = function(){
   var newRoom = prompt("Christian your room" || "Anon");
   currentRoom = newRoom;
   incomingRooms[newRoom] = newRoom;
-  $("select").append("<option>"+currentRoom+"</option>");
+  $("select").append("<option>"+currentRoom+"</span>");
   loadedRooms[newRoom] = newRoom;
   $("select").val(currentRoom);
   getMessage();
 };
 
-var appendUsers = function(){
-  $(".userBox").empty();
-  var $userList = $("<ul class='userList'></ul>").appendTo($(".userBox"));
-  console.log('userList',$userList);
-  _.each(userArray, function(value){
-    var $userName = $("<li></li>");
-    $userName.text(value);
-    //console.log($userName);
-    //$userList.append($userName.text(value));
-    $userName.appendTo($userList);
-  });
-};
-
-$(".userList").on("click","li",function(){
-  if(!_.contains(friends, $(this).text)) friends.push($(this).text());
-  console.log('test',$(this).text);
-  console.log('in click');
-});
 
 getMessage();
 

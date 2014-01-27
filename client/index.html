@@ -9,35 +9,94 @@
     <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
     <script src="bower_components/momentjs/moment.js"></script>
-    <script src="bower_components/backbone/backbone-min.js"></script>
-
+    
     <!-- internal javascript -->
     <script src="scripts/config.js"></script>
     <script src="scripts/app.js"></script>
+    <style>
+    
+    body{
+      background-color: #2980b9;
+    }
+    #main{
+      width: 700px;
+      min-height: 700px;
+      background-color: #bdc3c7;
+      border:none;
+      border-radius: 15px;
+      padding: 15px;
+      margin-top: 15px;
+    }
+    select{
+      width:150px;
+    }
+    input{
+      height:30px;
+      width:300px;
+      border-radius: 5px;
+    }
+    li {
+      font-weight:bold;
+      list-style: none;
+    }
+    .time{
+      font-weight: normal;
+      font-style: italic;  
+    }
+    .text{
+      margin-left: 10px;
+    }
+      /*border: solid #2980b9 2px;
+      border-radius: 5px;*/
+    }
+    .header{
+
+    }
+    .userBox{
+      float:left;
+      min-width: 150px;
+      min-height: 600px;
+      overflow: scroll;
+      background-color: #ecf0f1;
+      border-radius: 10px;
+      padding: 5px;
+      margin: 15px;
+    }
+    .userList>li{
+      padding-top: 5px;
+    }
+    .userList>li:hover{
+      color:#2980b9;
+      cursor:pointer;
+    }
+
+    .messagebox{
+      height: 680px;
+      overflow: scroll;
+      padding-left: 20px;
+    }
+    .friend{
+      color:#f1c40f;
+    }
+    </style>
   </head>
-  <script>
-    $(document).ready(function() {
-      window.chat.init();
-    });
-  </script>
   <body>
 
     <div id="container">
       <div id="header">
         <h1>Chat-Client</h1>
-        <form action='#' id='send' method='post'>
-           <textarea placeholder='tellmestuff'></textarea>
-            <!-- <input type="text" name="message" id="message"> -->
-          <br>
-          <input type="submit" name='submit' class='submit'>
-        </form>
-        <button id='getmsgs'>Get messages</button>
+        <button>More</button>
+        <input placeholder="What yo?!?!Do you even lift bro" class="write"></input>
+        <select selected="main">
+          <option>main</option>
+        </select>
+        <button class="room">I wanna new room</button>
       </div>
       <div id="main">
-   <!--      <div class="userBox">
+        <div class="userBox">
         </div>
         <div class="messagebox">
-        </div> -->
+        </div>
       </div>
     </div>
 
