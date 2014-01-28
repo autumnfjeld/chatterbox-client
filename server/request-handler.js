@@ -9,7 +9,11 @@ var _storage = [];
 exports.handleRequest = function(request, response) {
   console.log("Serving request type " + request.method + " for url " + request.url);
   
-  var statusCode = 200;
+  var statusCodes = {
+    found : 200,
+    created: 201,
+    notFound: 404
+  };
 
   // Post
   if (request.url === '/messages' && request.method === "POST"){
@@ -21,18 +25,21 @@ exports.handleRequest = function(request, response) {
     request.on('end', function() {
       _storage.push(dataString);
       console.log(_storage);
-      response.writeHead(statusCode, defaultCorsHeaders);
+      response.writeHead(statusCodes.created, defaultCorsHeaders);
 
-      response.end();
+      response.end(JSON.stringify(_storage.length));
     });
   }else if (request.url === '/messages' && request.method === "GET"){
       console.log('get messages!!!');
-      response.writeHead(statusCode, defaultCorsHeaders);
-      response.write(JSON.stringify(_storage));
-      response.end();
+      response.writeHead(statusCodes.found, defaultCorsHeaders);
+      response.end(JSON.stringify(_storage));
+  }
+  else if ( request.method === "OPTIONS"){
+    response.writeHead(statusCodes.found, defaultCorsHeaders);
+    response.end();  
   }
   else{
-    response.writeHead(statusCode, defaultCorsHeaders);
+    response.writeHead(statusCodes.notFound, defaultCorsHeaders);
     console.log("in the last else!");
     response.end("Hello, World!");
   }

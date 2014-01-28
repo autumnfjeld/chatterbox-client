@@ -18,7 +18,6 @@ we could have called it anything (myServer, blahblah, etc.). The function we pas
 will, unsurprisingly, handle all incoming requests. (ps: 'handleRequest' is in the 'request-handler' file).
 Lastly, we tell the server we made to listen on the given port and IP. */
 var server = http.createServer(handler.handleRequest);
-console.log("Listening on http://" + ip + ":" + port);
 server.listen(port, ip);
 
 /* To start this server, run:
