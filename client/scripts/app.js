@@ -13,12 +13,12 @@ var sendMessage = function(message){
   console.log("send");
   $.ajax({
   // always use this url
-  url: 'https://api.parse.com/1/classes/chatterbox',
+  url: 'http://127.0.0.1:8080/messages',
   type: 'POST',
   data: JSON.stringify(message),
   contentType: 'application/json',
   success: function (data) {
-    getMessage();
+    //getMessage();
     console.log('chatterbox: Message sent');
   },
   error: function (data) {
@@ -61,7 +61,8 @@ var displayTexts = function(data){
         userArray.push(value.username);
         appendUsers();
       }
-      $messages.append("<li>"+value.username+"  "+"<span class='time'>"+moment(value.createdAt).fromNow()+"</span>"+"</li>");
+      //$messages.append("<li>"+value.username+"  "+"<span class='time'>"+moment(value.createdAt).fromNow()+"</span>"+"</li>");
+      $messages.append("<li>" + value.username + "  " + "</span>" + "</li>");
       var $msgtext = $("<span class='text'></span>");
       $msgtext.text(value.text);
       $msgtext.appendTo($messages);
