@@ -18,7 +18,7 @@ var sendMessage = function(message){
   data: JSON.stringify(message),
   contentType: 'application/json',
   success: function (data) {
-    //getMessage();
+    getMessage();
     console.log('chatterbox: Message sent');
   },
   error: function (data) {
@@ -32,9 +32,9 @@ var getMessage = function(){
   console.log("get");
   $.ajax({
     // always use this url
-    url: 'https://api.parse.com/1/classes/chatterbox',
+    url: 'http://127.0.0.1:8080/messages',
     type: 'GET',
-    data: {"order":"-createdAt"},
+    //data: {"order":"-createdAt"},
     contentType: 'application/json',
     success: function (data) {
       displayTexts(data);
@@ -48,12 +48,14 @@ var getMessage = function(){
 };
 
 var displayTexts = function(data){
+  var jsonData = JSON.parse(data);
   console.log('display texts');
   var $messages = $("<ul class='messages'></ul>").appendTo('.messagebox');
   //console.log('check', $messages);
   $("span").remove();
   $("li").remove();
-  _.each(data.results, function(value){
+  _.each(jsonData, function(value){
+    value = JSON.parse(value);
     incomingRooms[value.roomname] = value.roomname;
     makeRoom();
     if(value.roomname && value.roomname === currentRoom){

@@ -11,7 +11,7 @@ exports.handleRequest = function(request, response) {
   
   var statusCode = 200;
 
-
+  // Post
   if (request.url === '/messages' && request.method === "POST"){
     var dataString = '';
     request.on('data', function(chunk) {
@@ -25,10 +25,18 @@ exports.handleRequest = function(request, response) {
 
       response.end();
     });
-  }else{
+  }else if (request.url === '/messages' && request.method === "GET"){
+      console.log('get messages!!!');
+      response.writeHead(statusCode, defaultCorsHeaders);
+      response.write(JSON.stringify(_storage));
+      response.end();
+  }
+  else{
     response.writeHead(statusCode, defaultCorsHeaders);
+    console.log("in the last else!");
     response.end("Hello, World!");
   }
+
 
 };
 
