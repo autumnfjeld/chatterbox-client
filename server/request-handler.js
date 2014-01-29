@@ -6,9 +6,19 @@
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
 var _messages = [];
 
+var mimeTypes = {
+    "html": "text/html",
+    "jpeg": "image/jpeg",
+    "jpg": "image/jpeg",
+    "png": "image/png",
+    "js": "text/javascript",
+    "css": "text/css"
+};
+
 var url = require('url'),
     path = require('path'),
-    fs = require('fs');
+    fs = require('fs'),
+    static = require('node-static');
 
 var headers = {
   //"Content-Type": "json/application",
@@ -27,12 +37,33 @@ var statusCodes = {
 
 var sendResponse = function(response, status, headers, data){
   response.writeHead(status, headers);
-  console.log('type:', response.method, 'checkdata',data);
   response.end(JSON.stringify(data));
 };
 
 var get = function(request, response){
-  sendResponse(response, statusCodes.found, headers, _messages);
+  if (request.url === '/messages') {
+    sendResponse(response, statusCodes.found, headers, _messages);
+  }else if (request.url === '/') {
+    sendFiles(request, response, "/client/index.html");
+  }else{
+    sendFiles(request, response, "/client"+request.url);
+  }
+
+};
+
+
+var sendFiles = function(request, response, resource){
+  var filename = path.join (process.cwd(), resource);
+
+  fs.readFile(filename, function(err, html){
+    if (err) {
+
+    }else{
+      response.writeHead(statusCodes.found, {'Content-Type':'text'});
+      response.write(html);
+      response.end();
+    }
+  });
 };
 
 var post = function(request, response){
@@ -58,37 +89,31 @@ var methods = {
   'OPTIONS': options
 };
 
-
 exports.handleRequest = function(request, response) {
   var method = methods[request.method];
 
   if (method) {
     method(request, response);
   }else{
-    console.log("in the last else!");
-    sendResponse(response, statusCodes.notFound, header);
+    console.log('not found');
+    sendResponse(response, statusCodes.notFound, headers);
   }
 };
 
-  // if(request.url === '/' && request.method === 'GET') {
-  //   var filename = path.join(process.cwd(), request.url);
-  //   console.log(filename );
 
-  //   // path.exists(filename, function(exists) {
-  //   //     if(!exists) {
-  //   //         console.log("not exists: " + filename);
-  //   //         res.writeHead(200, {'Content-Type': 'text/plain'});
-  //   //         res.write('404 Not Found\n');
-  //   //         res.end();
-  //   //     }
-  //   //     var mimeType = mimeTypes[path.extname(filename).split(".")[1]];
-  //   //     res.writeHead(200, mimeType);
+  // var filename = path.join(process.cwd(), request.url, resource);
 
-  //   //     var fileStream = fs.createReadStream(filename);
-  //   //     fileStream.pipe(res);
-  //   // });
+  // path.exists(filename, function(result) {
+  //     if(!result) {
+  //       console.log("not exists: " + filename);
+  //       response.writeHead(200, {'Content-Type': 'text/plain'});
+  //       response.write('404 Not Found\n');
+  //       response.end();
+  //     }
 
-  //   console.log('serving files');
-  //   sendResponse(response, statusCodes.found, headers);
-
-  // }
+  //     var mimeType = mimeTypes[path.extname(filename).split(".")[1]];
+  //     response.writeHead(200, {'Content-Type':mimeType});
+  //     var fileStream = fs.createReadStream(filename);
+  //     fileStream.pipe(response);
+  //     response.end();
+  // });
