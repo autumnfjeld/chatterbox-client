@@ -1,8 +1,6 @@
 var Messages = function(username,text,roomname){
-  this.username = 
-}
+  this.username = username;
+  this.text = text;
+  this.roomname = roomname;
+};
 
-
-  message["username"]= window.location.search.split("=")[1];
-    message["text"] = $(".write").val();
-    message["roomname"] 

@@ -48,8 +48,9 @@ var getMessage = function(){
 };
 
 var displayTexts = function(data){
+  console.log('display texts. data:', data);
   var jsonData = JSON.parse(data);
-  console.log('display texts');
+  //jsonData = data;
   var $messages = $("<ul class='messages'></ul>").appendTo('.messagebox');
   //console.log('check', $messages);
   $("span").remove();
