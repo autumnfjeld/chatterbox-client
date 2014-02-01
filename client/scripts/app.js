@@ -77,9 +77,10 @@ var displayTexts = function(data){
 $(".write").keydown(function(event){
   var message = {};
   if(event.which === 13){
-    message["username"]= window.location.search.split("=")[1];
+    message["username"]= 'someone';//window.location.search.split("=")[1];
     message["text"] = $(".write").val();
-    message["roomname"] = currentRoom;
+    message["timestamp"] = "10 min ago";
+    message["room"] = currentRoom;
     $("input").val("");
     sendMessage(message);
   }

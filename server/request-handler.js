@@ -18,7 +18,7 @@ var mimeTypes = {
 var url = require('url'),
     path = require('path'),
     fs = require('fs'),
-    static = require('node-static');
+    db = require('../database/SQL/persistent_server.js');
 
 var headers = {
   //"Content-Type": "json/application",
@@ -66,16 +66,25 @@ var sendFiles = function(request, response, resource){
   });
 };
 
-var post = function(request, response){
+var getData = function(request, callback ){
   var dataString = '';
   request.on('data', function(chunk) {
     dataString += chunk;
   });
 
   request.on('end', function() {
-    _messages.push(dataString);
-    sendResponse(response, statusCodes.created, headers, _messages.length);
+    callback(dataString);
   });
+};
+
+
+var post = function(request, response){
+  getData(request, function(dataString){
+    console.log('what is data', JSON.parse(dataString));
+    db.insert(JSON.parse(dataString), function(result){
+      sendResponse(response, statusCodes.created, headers, result);
+    });
+  });   
 };
 
 var options = function(request, response){
@@ -90,6 +99,7 @@ var methods = {
 };
 
 exports.handleRequest = function(request, response) {
+  console.log('in handleRequest', request.url);
   var method = methods[request.method];
 
   if (method) {
