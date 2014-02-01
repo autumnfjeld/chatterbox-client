@@ -4,5 +4,7 @@
   "main": "server/main.js",
   "author": "Hack Reactor",
   "license": "Copyright 2013, Hack Reactor. All rights reserved.",
-  "dependencies": {}
+  "dependencies": {
+    "mysql": "~2.0.1"
+  }
 }
