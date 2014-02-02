@@ -4,7 +4,11 @@
  * You'll have to figure out a way to export this function from
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
-var _messages = [];
+var url = require('url'),
+    path = require('path'),
+    fs = require('fs'),
+   // db = require('../database/SQL/persistent_server.js');
+    db = require('../database/ORM_Refactor/persistent_server_orm.js');
 
 var mimeTypes = {
     "html": "text/html",
@@ -14,11 +18,6 @@ var mimeTypes = {
     "js": "text/javascript",
     "css": "text/css"
 };
-
-var url = require('url'),
-    path = require('path'),
-    fs = require('fs'),
-    db = require('../database/SQL/persistent_server.js');
 
 var headers = {
   //"Content-Type": "json/application",
@@ -42,7 +41,9 @@ var sendResponse = function(response, status, headers, data){
 
 var get = function(request, response){
   if (request.url === '/messages') {
-    sendResponse(response, statusCodes.found, headers, _messages);
+    db.select( function(messages){
+      sendResponse(response, statusCodes.found, headers, messages);
+    });
   }else if (request.url === '/') {
     sendFiles(request, response, "/client/index.html");
   }else{
@@ -80,7 +81,6 @@ var getData = function(request, callback ){
 
 var post = function(request, response){
   getData(request, function(dataString){
-    console.log('what is data', JSON.parse(dataString));
     db.insert(JSON.parse(dataString), function(result){
       sendResponse(response, statusCodes.created, headers, result);
     });
@@ -99,7 +99,6 @@ var methods = {
 };
 
 exports.handleRequest = function(request, response) {
-  console.log('in handleRequest', request.url);
   var method = methods[request.method];
 
   if (method) {

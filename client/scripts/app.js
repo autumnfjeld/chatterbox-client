@@ -48,18 +48,16 @@ var getMessage = function(){
 };
 
 var displayTexts = function(data){
-  console.log('display texts. data:', data);
-  var jsonData = JSON.parse(data);
-  //jsonData = data;
+  data = JSON.parse(data);
   var $messages = $("<ul class='messages'></ul>").appendTo('.messagebox');
   //console.log('check', $messages);
   $("span").remove();
   $("li").remove();
-  _.each(jsonData, function(value){
-    value = JSON.parse(value);
-    incomingRooms[value.roomname] = value.roomname;
+
+  _.each(data, function(value){
+    incomingRooms[value.room] = value.room;
     makeRoom();
-    if(value.roomname && value.roomname === currentRoom){
+    if(value.room && value.room === currentRoom){
       if(value.username && !_.contains(userArray,value.username)) {
         userArray.push(value.username);
         appendUsers();
@@ -77,7 +75,7 @@ var displayTexts = function(data){
 $(".write").keydown(function(event){
   var message = {};
   if(event.which === 13){
-    message["username"]= 'someone';//window.location.search.split("=")[1];
+    message["username"]= window.username;// RED FLAG!!!!!!!!!window.location.search.split("=")[1];
     message["text"] = $(".write").val();
     message["timestamp"] = "10 min ago";
     message["room"] = currentRoom;
@@ -99,8 +97,8 @@ $("select").change(function(){
 var makeRoom = function(){
   _.each(incomingRooms, function(value){
     if(!_.contains(loadedRooms, value)){
-      var $roomName = $("<option></option>");
-      $roomName.text(value).appendTo($("select"));
+      var $room = $("<option></option>");
+      $room.text(value).appendTo($("select"));
       loadedRooms[value] = value;
     }
   });
